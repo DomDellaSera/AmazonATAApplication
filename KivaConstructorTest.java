@@ -23,7 +23,8 @@ public class KivaConstructorTest {
         // THEN 
         // The initial Kiva location is (2, 4) 
         Point initialLocation = kiva.getCurrentLocation();
-        System.out.println(initialLocation.getX());
+        System.out.println("Initial Location"+initialLocation.toString());
+        System.out.println("Next location "+ kiva.getNextLocation());
         Point expectedLocation = new Point(2, 4);
         if (sameLocation(initialLocation, expectedLocation)) { 
             System.out.println("testSingleArgumentConstructor SUCCESS"); 
