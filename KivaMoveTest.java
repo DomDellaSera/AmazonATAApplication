@@ -164,13 +164,7 @@ public class KivaMoveTest {
         kiva.move(KivaCommand.TAKE);
         verifyKivaState("testTakeOnPodPost; Carrying", kiva, new Point(8,1), FacingDirection.RIGHT, true, false);
         
-        
-        
-        
-        
-        
-    
-        
+
     }
     public void getMetadata(){
     Kiva kiva = new Kiva(defaultMap);
