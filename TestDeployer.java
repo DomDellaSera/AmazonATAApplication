@@ -64,8 +64,39 @@ Simple Rotations:
 			
 		KivaMoveTest group4 = new KivaMoveTest();
 		group4.testTakeOnPod();
-		group4.testOnDropZone();
+		group4.testDropOnDropZone();
 
 		
 	}
+	void testBounds(){
+	    kivMoveTest group4 = KivaMoveTest();
+	    testLowerBoundY();
+	    testLowerBoundYException();
+	    testLowerBoundX();
+
+	   testLowerBoundXException();
+	   testUpperBoundYException();
 }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

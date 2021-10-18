@@ -211,10 +211,11 @@ public class KivaMoveTest {
      kiva.printDropZoneLocation();
      kiva.move(KivaCommand.DROP);
      verifyKivaState("testDroppedZoneException", kiva, new Point(10, 4), FacingDirection.RIGHT, false, true);
+     }
      
      
-     
-    }
+    
+    //}
     public void testDropOnDropZoneException(){
         Kiva kiva = new Kiva(defaultMap);
         kiva.move(KivaCommand.FORWARD);
@@ -243,6 +244,7 @@ System.out.println("Successful Test");
 }
 public void testIllegalDropZoneException(){
 Kiva kiva = new Kiva(defaultMap);
+
      kiva.printKivaLocation();
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
@@ -269,7 +271,9 @@ Kiva kiva = new Kiva(defaultMap);
      kiva.move(KivaCommand.DROP);
 
 
-}
+    }
+
+//testBoundsTests(){
 public void testLowerBoundY(){
       Kiva kiva = new Kiva(defaultMap);
       kiva.db = true;
@@ -282,7 +286,7 @@ public void testLowerBoundY(){
 }
 public void testLowerBoundYException(){
       Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
+      //kiva.db = true;
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
@@ -323,11 +327,16 @@ public void testLowerBoundXException(){
     System.out.println("Error thrown: " + e);
 }
 }
-public void testUpperBoundY(){
+
+
+
+
+
+void upperBoundTestRand(){
 
     String testName = "UpperBoundY";
       Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
+      //kiva.db = true;
       kiva.move(KivaCommand.TURN_LEFT);
       kiva.move(KivaCommand.TURN_LEFT);
       kiva.move(KivaCommand.FORWARD);
@@ -375,6 +384,7 @@ public void testUpperBoundX(){
             verifyKivaState("test"+testName, kiva, new Point(12,6), FacingDirection.DOWN,false,false);
       verifyNextThrow("test"+testName, kiva, true);
     }
+    
 public void testUpperBoundXException(){
     String testName = "UpperBoundXException";
       Kiva kiva = new Kiva(defaultMap);
@@ -402,7 +412,7 @@ public void testUpperBoundXException(){
     System.out.println("Error thrown: " + e);
 }
 }  
-
+//}
 public void kivaTestClearance(){
     String testName = "UpperBoundXException";
       Kiva kiva = new Kiva(defaultMap);
@@ -433,6 +443,9 @@ public void kivaTestClearance(){
                     String.format("%s: Exception throw onForward FAIL!", testName));}
             }
 
+            /**
+             * Verifies the current keva state
+             */
     private void verifyKivaState(
             String testName,
             Kiva actual,

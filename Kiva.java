@@ -2,7 +2,7 @@ import edu.duke.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 /**
- * Write a description of Kiva here.
+ * Main Kiva Object
  * 
  * @author (your name) 
  * @version (a version number or a date)
@@ -84,6 +84,7 @@ public class Kiva {
         fdRightIndex.add(FacingDirection.LEFT);
         //fdRightIndex.add(FacingDirection.UP);
     }
+    
     Kiva(FloorMap map){
 
 
@@ -200,13 +201,14 @@ return errorMessage;
         //return nextLocation.toString();
         return nextLocation;
     }
-    public FacingDirection getDirectionFacing(){
-        return directionFacing;
-    }
+  public FacingDirection getDirectionFacing(){
+      return directionFacing;
+   }
 
     public void setDirectionFacing(FacingDirection newDir){
         directionFacing = newDir;
     }
+    
     private boolean sameLocation(Point a, Point b) {
         return a.getX() == b.getX() && a.getY() == b.getY();
     }
@@ -317,24 +319,12 @@ return errorMessage;
             case DROP:
             dropPod();
             break;
-               /**
-               FORWARD ('F'),
-TURN_LEFT ('L'),
-TURN_RIGHT ('R'),
-TAKE ('T'),
-DROP
-*/
-                 
-        
-
-    }
-}
-    
+               
+               //FORWARD ('F'),;
+            }
+ }   
     private void moveForward(){
-    
-        
-       // if(nextLocatio
-        
+
     currentLocation = nextLocation;
     
     setNextLocation();
@@ -345,21 +335,20 @@ DROP
     public boolean isCarryingPod(){
     return carryingPod;
 }
-    public boolean isSuccessfullyDropped(){
-        return successfullyDropped;
-    }
-    
-    public Point getCurrentLocation(){
+public Point getCurrentLocation(){
         
     return currentLocation;
     }
-    public void printKivaLocation(){
-        System.out.println("The current kiva location is: "+ getCurrentLocation());
-    }
-        
+    public boolean isSuccessfullyDropped(){
+        return successfullyDropped;
+    }  
     
+      
     public Point getDropZoneLocation(){
         return map.getDropZoneLocation();
+    }
+      public void printKivaLocation(){
+        System.out.println("The current kiva location is: "+ getCurrentLocation());
     }
     public void printDropZoneLocation(){
          System.out.println("The current Drop Zone location is: "+ getDropZoneLocation());
