@@ -5,7 +5,7 @@
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class KivaCommandTester {
+public class KivaCommandTester{ 
 
     public void testForward(){
     KivaCommand command = KivaCommand.FORWARD;
