@@ -25,8 +25,7 @@ public class RemoteControl {
      *
      *@param inputMap the input map text file that will serve as the Wherehouse map.
      *@throws IllegalArgumentException if user doesn't enter the correct instructions.
-     * [Here's the method you'll execute from within BlueJ. It may or may not run successfully
-     * as-is, but you'll definitely need to add more to complete the project.]
+     * 
      */
     public void run() {
         System.out.println("Please select a map file.");
