@@ -2,9 +2,10 @@ import edu.duke.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 /**
- * Main Kiva Object
+ * Kiva simulates the movement of a robot by providing a small list of options for movement. Kiva moves across a FloorMap with various obsticales. Kiva's ultimate goal is to move the POD
+ * to the Drop Zone in order to simulate the movement of goods by robot.
  * 
- * @author (your name) 
+ * @author Dominic Della Sera  
  * @version (a version number or a date)
  */
 public class Kiva {
@@ -12,6 +13,11 @@ public class Kiva {
     private Point nextLocation;
     FloorMap map;
     
+    /**
+     * Direction facing is the main controller of orientation. 
+     * 
+     *Its possible values are UP, LEFT, RIGHT, DOWN.
+     */
     FacingDirection directionFacing; //= FacingDirection.UP;
     boolean carryingPod = false;
     boolean successfullyDropped = false;
@@ -19,14 +25,15 @@ public class Kiva {
     
     private Point upperBound;
     private Point lowerBound;
+    private double MotorLifetime;
     /**
      * This is the array index for rotating left
      */
-    final ArrayList<FacingDirection> fdIndex= new ArrayList<FacingDirection>();
+    final private ArrayList<FacingDirection> fdIndex= new ArrayList<FacingDirection>();
     /**
      * This is the array index for rotating right
      */
-    final ArrayList<FacingDirection> fdRightIndex = new ArrayList<FacingDirection>();
+    final private ArrayList<FacingDirection> fdRightIndex = new ArrayList<FacingDirection>();
     
     boolean throwNextForward;
     boolean db = false;
@@ -101,8 +108,9 @@ public class Kiva {
      this.currentLocation = map.getInitialKivaLocation();
      //System.out.println(currentLocation);
      this.directionFacing = FacingDirection.UP;
+     this.MotorLifetime = 0.0;
 
-     setNextLocation();
+     //setNextLocation();
      constructGroupsMod4();
      
     }
@@ -138,6 +146,7 @@ public class Kiva {
      * setNextLocation is the mover forward helper location. While the next location is technically the same as the location as directionFacing it is difficult to reason about
      * the same physical point in terms of two points of time simultaneously. FacingDirection directionFacing imples a future point whereas setNextLocation treats the same point in terms 
      * of the present.
+     * 
      */
     private void setNextLocation(){
         int x = currentLocation.getX();
@@ -355,16 +364,20 @@ return errorMessage;
            //if (throwNextForward==true){
             //throw  new IllegalMoveException(getErrorMessage()); }
             moveForward();
+            incrementMotorLifetime();
             break;
             case TURN_LEFT:
             turnLeft();
+            incrementMotorLifetime();
            // setDirectionFacing;
             break;
             case TURN_RIGHT:
             turnRight();
+            incrementMotorLifetime();
             break;
             case TAKE:
             takePod();
+            incrementMotorLifetime();
             break;
             case DROP:
             dropPod();
@@ -398,12 +411,11 @@ public Point getCurrentLocation(){
     }  
     
       
-    public Point getDropZoneLocation(){
-        return map.getDropZoneLocation();
-    }
+    public Point getDropZoneLocation(){return map.getDropZoneLocation();}
 
     public void printMap(){
     System.out.println(map.toString());}
     
-    
+    public double getMotorLifetime(){return MotorLifetime;}
+    private void incrementMotorLifetime(){MotorLifetime+=1000;}
 }
