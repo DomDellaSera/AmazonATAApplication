@@ -163,7 +163,7 @@ public class Kiva {
             break;
                 }
         nextLocation = new Point(x,y);
-        FloorMapObject nextObj = map.getObjectAtLocation(nextLocation);
+        FloorMapObject nextObj = map.getObjectAtLocation(getNextLocation());
         
    switch(nextObj){
         case OBSTACLE:
@@ -265,6 +265,9 @@ return errorMessage;
        i^2{-i,1,i,-1},
        i^3{1,i,-1,-i},
        i^4{-i,-1,i,1}}
+       
+
+            
        */
       
      
@@ -305,31 +308,36 @@ return errorMessage;
     }
 
     private void dropPod(){
+        System.out.println("Current location "+ getCurrentLocation());
+        System.out.println("DropZone Location "+ getDropZoneLocation());
+        System.out.println("Pod Carying:" + isCarryingPod());
         
 
         
        if(isCarryingPod() == true){
-           if(sameLocation(getCurrentLocation(),getDropZoneLocation()) && isCarryingPod()){
+           if(sameLocation(getCurrentLocation(),getDropZoneLocation()) ){
                 carryingPod = false;
                 successfullyDropped = true;
             }
-            else if(sameLocation(getCurrentLocation(),getDropZoneLocation()) && !isCarryingPod()){ 
+           
             
-                throw new IllegalMoveException("Kiva is not currently carrying a pod");
-            }
-            else if(isCarryingPod() && sameLocation(getCurrentLocation(),getDropZoneLocation())) {
+            else if(!sameLocation(getCurrentLocation(),getDropZoneLocation())) {
             throw new IllegalDropZoneException("Incorrect drop zone");
         }
-            
-            else if (!isCarryingPod()){
+    }
+           else if (!isCarryingPod() && sameLocation(getCurrentLocation(),getDropZoneLocation())){
+            throw new IllegalMoveException("Correct location, but the pod was forgotten");
+        }
+        else if(!isCarryingPod() && !sameLocation(getCurrentLocation(),getDropZoneLocation())){
             throw new NoPodException("Kiva is not currently carrying the pod");
         }
+        
         
         //}
     }
         
     
-    }
+    
 
     
 
@@ -393,12 +401,7 @@ public Point getCurrentLocation(){
     public Point getDropZoneLocation(){
         return map.getDropZoneLocation();
     }
-      public void printKivaLocation(){
-        System.out.println("The current kiva location is: "+ getCurrentLocation());
-    }
-    public void printDropZoneLocation(){
-         System.out.println("The current Drop Zone location is: "+ getDropZoneLocation());
-    }
+
     public void printMap(){
     System.out.println(map.toString());}
     

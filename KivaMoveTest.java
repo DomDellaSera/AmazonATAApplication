@@ -169,7 +169,7 @@ public class KivaMoveTest {
         kiva.move(KivaCommand.FORWARD);
         kiva.move(KivaCommand.FORWARD);
         kiva.getPodLocation();
-        kiva.printKivaLocation();
+        //kiva.printKivaLocation();
         verifyKivaState("testTakeOnPod; Not carrying", kiva, new Point(8,1), FacingDirection.RIGHT, false, false);
         kiva.move(KivaCommand.TAKE);
         verifyKivaState("testTakeOnPodPost; Carrying", kiva, new Point(8,1), FacingDirection.RIGHT, true, false);
@@ -186,7 +186,7 @@ public class KivaMoveTest {
      //move to the drop zone, and drop the pod. 
      //Verify the state​ of the Kiva object. Ensure that it is not carrying the pod, and the drop was successful.
      Kiva kiva = new Kiva(defaultMap);
-     kiva.printKivaLocation();
+     //kiva.printKivaLocation();
      kiva.move(KivaCommand.FORWARD);
 
      kiva.move(KivaCommand.FORWARD);
@@ -203,7 +203,7 @@ public class KivaMoveTest {
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
 
-     kiva.printKivaLocation();
+    // kiva.printKivaLocation();
      kiva.move(KivaCommand.TAKE);
 
         
@@ -217,8 +217,8 @@ public class KivaMoveTest {
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
      
-     kiva.printKivaLocation();
-     kiva.printDropZoneLocation();
+     //kiva.printKivaLocation();
+     //kiva.printDropZoneLocation();
      kiva.move(KivaCommand.DROP);
      verifyKivaState("testDroppedZoneException", kiva, new Point(10, 4), FacingDirection.RIGHT, false, true);
      }
@@ -246,7 +246,7 @@ public class KivaMoveTest {
      kiva.move(KivaCommand.FORWARD);
      //kiva.move(KivaCommand.FORWARD);
      try{
-         kiva.printKivaLocation();
+         //kiva.printKivaLocation();
         }
 catch(NoPodException noPod) {
 System.out.println("Successful Test");
@@ -255,7 +255,7 @@ System.out.println("Successful Test");
 public void testIllegalDropZoneException(){
 Kiva kiva = new Kiva(defaultMap);
 
-     kiva.printKivaLocation();
+    // kiva.printKivaLocation();
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
@@ -266,7 +266,7 @@ Kiva kiva = new Kiva(defaultMap);
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
-     kiva.printKivaLocation();
+     //kiva.printKivaLocation();
      kiva.move(KivaCommand.TAKE);
         
      kiva.move(KivaCommand.TURN_RIGHT);

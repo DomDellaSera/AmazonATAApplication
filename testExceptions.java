@@ -29,6 +29,14 @@ public class testExceptions {
                            + "  K       D  \n"
                            + " * * * * * **\n"
                            + "-- ----------\n";
+                       String podLayout = ""
+                           + "-- ----------\n"
+                           + "        PP  *\n"
+                           + "   **       *\n"
+                           + "   **       *\n"
+                           + "  K       D  \n"
+                           + " * * * * * **\n"
+                           + "-- ----------\n";
                            
     FloorMap defaultMap = new FloorMap(defaultLayout);
     //FloorMap boundMap = new FloorMap(boundLayout);
@@ -70,7 +78,7 @@ public class testExceptions {
         kiva.move(KivaCommand.FORWARD);
         kiva.move(KivaCommand.FORWARD);
         kiva.getPodLocation();
-        kiva.printKivaLocation();
+        //kiva.printKivaLocation();
         verifyKivaState("testTakeOnPod; Not carrying", kiva, new Point(8,1), FacingDirection.RIGHT, false, false);
         kiva.move(KivaCommand.TAKE);
         verifyKivaState("testTakeOnPodPost; Carrying", kiva, new Point(8,1), FacingDirection.RIGHT, true, false);
@@ -87,7 +95,7 @@ public class testExceptions {
      //move to the drop zone, and drop the pod. 
      //Verify the state​ of the Kiva object. Ensure that it is not carrying the pod, and the drop was successful.
      Kiva kiva = new Kiva(defaultMap);
-     kiva.printKivaLocation();
+     //kiva.printKivaLocation();
      kiva.move(KivaCommand.FORWARD);
 
      kiva.move(KivaCommand.FORWARD);
@@ -104,7 +112,7 @@ public class testExceptions {
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
 
-     kiva.printKivaLocation();
+     //kiva.printKivaLocation();
      kiva.move(KivaCommand.TAKE);
 
         
@@ -118,8 +126,8 @@ public class testExceptions {
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
      
-     kiva.printKivaLocation();
-     kiva.printDropZoneLocation();
+     //kiva.printKivaLocation();
+     //kiva.printDropZoneLocation();
      kiva.move(KivaCommand.DROP);
      verifyKivaState("testDroppedZoneException", kiva, new Point(10, 4), FacingDirection.RIGHT, false, true);
      }
@@ -127,36 +135,21 @@ public class testExceptions {
      
     
     //}
-    public void testDropOnDropZoneException(){
+    public void testInvalidPodTake(){
         Kiva kiva = new Kiva(defaultMap);
         kiva.move(KivaCommand.FORWARD);
+        System.out.println("Expect a invalid POD Exception");
         kiva.move(KivaCommand.TAKE);
-        
+        System.out.println("Fail! Moved onto a pod while carrying a pod!");
         // THEN
         // The Kiva has moved one space up
 
 
-     kiva.move(KivaCommand.FORWARD);
-     kiva.move(KivaCommand.FORWARD);
-     kiva.move(KivaCommand.FORWARD);
-     kiva.move(KivaCommand.TURN_RIGHT);
-     kiva.move(KivaCommand.FORWARD);
-     kiva.move(KivaCommand.FORWARD);
-     kiva.move(KivaCommand.FORWARD);
-     kiva.move(KivaCommand.FORWARD);
-     kiva.move(KivaCommand.FORWARD);
-     //kiva.move(KivaCommand.FORWARD);
-     try{
-         kiva.printKivaLocation();
-        }
-catch(NoPodException noPod) {
-System.out.println("Successful Test");
-}
 }
 public void testIllegalDropZoneException(){
 Kiva kiva = new Kiva(defaultMap);
 
-     kiva.printKivaLocation();
+     //kiva.printKivaLocation();
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
@@ -167,7 +160,7 @@ Kiva kiva = new Kiva(defaultMap);
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
      kiva.move(KivaCommand.FORWARD);
-     kiva.printKivaLocation();
+     //kiva.printKivaLocation();
      kiva.move(KivaCommand.TAKE);
         
      kiva.move(KivaCommand.TURN_RIGHT);
@@ -177,17 +170,79 @@ Kiva kiva = new Kiva(defaultMap);
      kiva.move(KivaCommand.TURN_LEFT);
      kiva.move(KivaCommand.FORWARD);
      //kiva.move(KivaCommand.FORWARD);
+     kiva.getDropZoneLocation();
 
-
+     System.out.println("Expect IllegalDropZoneException");
      kiva.move(KivaCommand.DROP);
+     System.out.println("FAIL");
 
 
     }
 
 //testBoundsTests(){
+public void testNoPodCorrectDropZone(){
+Kiva kiva = new Kiva(defaultMap);
 
+     //kiva.printKivaLocation();
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.TURN_RIGHT);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+ kiva.move(KivaCommand.TURN_RIGHT);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.TURN_LEFT);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.getDropZoneLocation();
+
+
+     System.out.println("Expect IllegalMoveException");
+     kiva.move(KivaCommand.DROP);
+     System.out.println("FAIL");
+
+
+
+
+
+
+    }
+    public void testDoubleTakeException(){
+Kiva kiva = new Kiva(defaultMap);
+
+     //kiva.printKivaLocation();
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.TURN_RIGHT);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     kiva.move(KivaCommand.FORWARD);
+     //kiva.printKivaLocation();
+     kiva.move(KivaCommand.TAKE);
+      kiva.move(KivaCommand.TAKE);
+        
+     //kiva.move(KivaCommand.TURN_RIGHT);
+     //kiva.move(KivaCommand.FORWARD);
+
+
+
+
+
+
+    }
 public void testLowerBoundYException(){
-      Kiva kiva = new Kiva(defaultMap);
+      Kiva kiva = new Kiva(new FloorMap(boundsLayout));
       //kiva.db = true;
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
@@ -205,7 +260,7 @@ public void testLowerBoundYException(){
 public void testLowerBoundXException(){
 
     String testName = "LowerBoundXException";
-      Kiva kiva = new Kiva(defaultMap);
+      Kiva kiva = new Kiva(new FloorMap(boundsLayout));
       kiva.db = true;
       kiva.move(KivaCommand.TURN_LEFT);
       kiva.move(KivaCommand.FORWARD);
@@ -235,7 +290,7 @@ public void testMoveOutOfBounds() {
 public void testUpperBoundYException(){
 
     String testName = "UpperBoundYException";
-      Kiva kiva = new Kiva(defaultMap);
+      Kiva kiva = new Kiva(new FloorMap(boundsLayout));
       kiva.db = true;
       kiva.move(KivaCommand.TURN_LEFT);
       kiva.move(KivaCommand.TURN_LEFT);
@@ -243,18 +298,21 @@ public void testUpperBoundYException(){
       kiva.move(KivaCommand.FORWARD);
 
 
- try{
+ //try{
+      System.out.println("testMoveOutOfBounds: (expect an IllegalMoveException)");
       kiva.move(KivaCommand.FORWARD);
-    }
-    catch (IllegalMoveException e){
-    System.out.println("Error thrown: " + e);
-}
+   // }
+   // catch (IllegalMoveException e){
+  //  System.out.println("Error thrown: " + e);
+   System.out.println("testMoveOutOfBounds FAIL!");
+        System.out.println("Moved outside the FloorMap!");
+
 }
 
     
 public void testUpperBoundXException(){
     String testName = "UpperBoundXException";
-      Kiva kiva = new Kiva(defaultMap);
+      Kiva kiva = new Kiva(new FloorMap(boundsLayout));
       kiva.db = true;
       kiva.move(KivaCommand.TURN_RIGHT);
       kiva.move(KivaCommand.FORWARD);      
@@ -271,13 +329,19 @@ public void testUpperBoundXException(){
 
         //    verifyKivaState("test"+testName, kiva, new Point(2,12), FacingDirection.DOWN,false,false);
       //verifyNextThrow("test"+testName, kiva, true);
-
- try{
+      System.out.println("testMoveOutOfBounds: (expect an IllegalMoveException)");
+      kiva.move(KivaCommand.FORWARD);
+   // }
+   // catch (IllegalMoveException e){
+  //  System.out.println("Error thrown: " + e);
+   System.out.println("testMoveOutOfBounds FAIL!");
+        System.out.println("Moved outside the FloorMap!");
+/* try{
       kiva.move(KivaCommand.FORWARD);
     }
     catch (IllegalMoveException e){
     System.out.println("Error thrown: " + e);
-}
+}*/
 }  
 //}
 /*public void kivaTestClearance(){
@@ -297,6 +361,7 @@ public void testUpperBoundXException(){
 */
  public void testObstacleThrow(){
             Kiva kiva = new Kiva(defaultMap);
+            
              kiva.move(KivaCommand.FORWARD);
              kiva.move(KivaCommand.TURN_RIGHT);
               kiva.move(KivaCommand.FORWARD);
@@ -308,7 +373,9 @@ public void testUpperBoundXException(){
         
         }
 public void testPodCollision(){
-        Kiva kiva = new Kiva(defaultMap);
+        Kiva kiva = new Kiva(new FloorMap(defaultLayout));
+        kiva.carryingPod = true;
+        System.out.println(kiva.isCarryingPod());
         kiva.move(KivaCommand.FORWARD);
         kiva.move(KivaCommand.FORWARD);
         kiva.move(KivaCommand.FORWARD);
@@ -318,9 +385,12 @@ public void testPodCollision(){
         kiva.move(KivaCommand.FORWARD);
         kiva.move(KivaCommand.FORWARD);
         kiva.move(KivaCommand.FORWARD);
+        System.out.println("Expect Illegal Move Exception");
         kiva.move(KivaCommand.FORWARD);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.FORWARD);
+        System.out.println(kiva.isCarryingPod());
+
+        System.out.println("Fail! Moved onto a pod while carrying a pod!");
+        //kiva.move(KivaCommand.FORWARD);
         }
     private void verifyNextThrow(
             String testName,
