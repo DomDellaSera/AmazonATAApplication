@@ -19,14 +19,22 @@ public class Kiva {
     
     private Point upperBound;
     private Point lowerBound;
-    ArrayList<FacingDirection> fdIndex= new ArrayList<FacingDirection>();
-    ArrayList<FacingDirection> fdRightIndex = new ArrayList<FacingDirection>();
+    /**
+     * This is the array index for rotating left
+     */
+    final ArrayList<FacingDirection> fdIndex= new ArrayList<FacingDirection>();
+    /**
+     * This is the array index for rotating right
+     */
+    final ArrayList<FacingDirection> fdRightIndex = new ArrayList<FacingDirection>();
     
     boolean throwNextForward;
     boolean db = false;
     
     private String errorMessage;
-    
+    /**
+     *  constructGroupsMod4
+     */
     private void constructGroupsMod4(){
         //We can construct a rotation premitive by secifying 2 groups, mod 4
         // the operation o on (G,o) is a group if (G,o):
@@ -53,7 +61,7 @@ public class Kiva {
        * To invert this group we can flip it and rotate it.
        * 
 
-    
+     
            Origin: 
            
            0
@@ -84,14 +92,15 @@ public class Kiva {
         fdRightIndex.add(FacingDirection.LEFT);
         //fdRightIndex.add(FacingDirection.UP);
     }
+   //FlooObject terrain =  map.getObjectAtLocation(
     
     Kiva(FloorMap map){
 
 
      this.map = map;
      this.currentLocation = map.getInitialKivaLocation();
-     System.out.println(currentLocation);
-     directionFacing = FacingDirection.UP;
+     //System.out.println(currentLocation);
+     this.directionFacing = FacingDirection.UP;
 
      setNextLocation();
      constructGroupsMod4();
@@ -124,6 +133,12 @@ public class Kiva {
         FacingDirection dir = getDirectionFacing();
         return (fdIndex.indexOf(dir)+1)%4;
     }
+    
+    /**
+     * setNextLocation is the mover forward helper location. While the next location is technically the same as the location as directionFacing it is difficult to reason about
+     * the same physical point in terms of two points of time simultaneously. FacingDirection directionFacing imples a future point whereas setNextLocation treats the same point in terms 
+     * of the present.
+     */
     private void setNextLocation(){
         int x = currentLocation.getX();
         int y = currentLocation.getY();
@@ -148,17 +163,34 @@ public class Kiva {
             break;
                 }
         nextLocation = new Point(x,y);
-        System.out.println("Facing Direction " + getDirectionFacing());
-        System.out.println("Next Location " + getNextLocation());
+        FloorMapObject nextObj = map.getObjectAtLocation(nextLocation);
+        
+   switch(nextObj){
+        case OBSTACLE:
+        throw new IllegalMoveException("Kiva is trying to run into an obstacle");
+        //break;
+        case POD:
+        if(isCarryingPod() == true){
+         throw new IllegalMoveException("Kiva is holding a POD while trying to move onto a POD");
+        }
+         break;
+    }
+        
+        
+
+        
         
     }
+    
     private void checkUpperBounds(int nextMove,int bound) {
         if(db == true){
         System.out.println("Next move "+ nextMove + " upper Bound: " +bound );
     }
         if(nextMove > bound){
-        setThrowNextMove(true);
-        setErrorMessage("Exceeded Upper Bound: moved to " + nextMove + " outside of "+ bound );
+          throw new IllegalMoveException("Move beyond Upper bound bounds");
+        //setThrowNextMove(true);
+        //System.out.println("setThrowNextMove is true");
+        //setErrorMessage("Exceeded Upper Bound: moved to " + nextMove + " outside of "+ bound );
     }
     else{setThrowNextMove(false);
     }
@@ -168,19 +200,16 @@ public class Kiva {
     if(db == true){
         System.out.println("Next move "+ nextMove + "lower Bound: " +bound );}
     if(nextMove< bound){
-    setThrowNextMove(true);
-    setErrorMessage("Exceeded Lower Bound: moved to " + nextMove + " outside of "+ bound );
+       throw new IllegalMoveException("Move beyond lower bounds");
+    //setThrowNextMove(true);
+    //setErrorMessage("Exceeded Lower Bound: moved to " + nextMove + " outside of "+ bound );
     }
     else{
         setThrowNextMove(false);
     }
 }
 
-public void checkFloorClearance(){
-    Point nextSquare = getNextLocation();
-    FloorMapObject nextObj = map.getObjectAtLocation(nextSquare);
-    System.out.print(nextObj.toChar());
-}
+
     
     private void setThrowNextMove(boolean throwNextForward){
         this.throwNextForward = throwNextForward;
@@ -201,6 +230,7 @@ return errorMessage;
         //return nextLocation.toString();
         return nextLocation;
     }
+
   public FacingDirection getDirectionFacing(){
       return directionFacing;
    }
@@ -246,11 +276,7 @@ return errorMessage;
            
            */
         int curDirIdx = (fdIndex.indexOf(directionFacing) + 1) % 4;
-        ///curDirIdx= (curDirIdx +1)%4;
-        //System.out.println("Turnning l, new direction index: "+ curDirIdx);
-        setDirectionFacing(fdIndex.get(curDirIdx));
-        setNextLocation();
-        
+        setDirectionFacing(fdIndex.get(curDirIdx));    
     }
     private void turnRight(){
         /*              Rotate in the the direction of +1
@@ -263,7 +289,7 @@ return errorMessage;
    // System.out.println("Turnningr Right, next direction index: "+ curDirIdx);
         ///curDirIdx= (curDirIdx +1)%4;
         setDirectionFacing(fdRightIndex.get(curDirIdx));
-        setNextLocation();
+
     }
     private void takePod(){
         Point currentKivaLocation = getCurrentLocation();
@@ -272,7 +298,9 @@ return errorMessage;
         {
             carryingPod = true;
         }
-        else throw new NoPodException("Not standing over pod");
+        else {
+            throw new NoPodException("Not standing over pod");
+    }
         
     }
 
@@ -281,14 +309,23 @@ return errorMessage;
 
         
        if(isCarryingPod() == true){
-           if(sameLocation(getCurrentLocation(),getDropZoneLocation())){
+           if(sameLocation(getCurrentLocation(),getDropZoneLocation()) && isCarryingPod()){
                 carryingPod = false;
                 successfullyDropped = true;
             }
-            else {
+            else if(sameLocation(getCurrentLocation(),getDropZoneLocation()) && !isCarryingPod()){ 
+            
+                throw new IllegalMoveException("Kiva is not currently carrying a pod");
+            }
+            else if(isCarryingPod() && sameLocation(getCurrentLocation(),getDropZoneLocation())) {
             throw new IllegalDropZoneException("Incorrect drop zone");
-        
         }
+            
+            else if (!isCarryingPod()){
+            throw new NoPodException("Kiva is not currently carrying the pod");
+        }
+        
+        //}
     }
         
     
@@ -296,14 +333,19 @@ return errorMessage;
 
     
 
+    /**
+     * move is the main command which creates Robot action
+     * 
+     * @param wefw
+     */
     public void move(KivaCommand command){
         switch (command) {
             case FORWARD:
            // if(nextLocation > Upperbound || nextLocation > LowerBound){
            // }
            
-           if (throwNextForward==true){
-            throw  new IllegalMoveException(getErrorMessage()); }
+           //if (throwNextForward==true){
+            //throw  new IllegalMoveException(getErrorMessage()); }
             moveForward();
             break;
             case TURN_LEFT:
@@ -324,13 +366,17 @@ return errorMessage;
             }
  }   
     private void moveForward(){
-
+        setNextLocation(); //THIS DOESN'T MOVE THE ROBOT BECAUSE WE HAVE NOT CHANGE CURRENT LOCATION
+        
     currentLocation = nextLocation;
-    
-    setNextLocation();
+
+    //setNextLocation(); //THIS MOVES THE ROBOT BECAUSE CURRENT LOCATION HAS CHANGED
+            System.out.println("Facing Direction " + getDirectionFacing());
+        System.out.println(getCurrentLocation());
+        System.out.println("Next Location " + getNextLocation());
     }
     
-  
+
     
     public boolean isCarryingPod(){
     return carryingPod;

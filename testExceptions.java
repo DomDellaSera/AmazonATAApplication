@@ -1,13 +1,15 @@
-
+import edu.duke.Point;
 /**
- * Write a description of KivaMoveTest here.
+ * Write a description of testExceptions here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-import edu.duke.Point;
+public class testExceptions {
 
-public class KivaMoveTest {
+
+
+
     // Define the FloorMap we'll use for all the tests
     String defaultLayout = ""
                            + "-------------\n"
@@ -19,17 +21,17 @@ public class KivaMoveTest {
                            + "-------------\n";
                            
 
-                 String podLayout = ""
-                           + "-------------\n"
+                 String boundsLayout = ""
+                           + "-- ----------\n"
                            + "        P   *\n"
-                           + "   **    P  *\n"
                            + "   **       *\n"
-                           + "  K       D *\n"
+                           + "   **       *\n"
+                           + "  K       D  \n"
                            + " * * * * * **\n"
-                           + "-------------\n";
+                           + "-- ----------\n";
                            
     FloorMap defaultMap = new FloorMap(defaultLayout);
-    //FloorMap podMap = new FloorMap(podLayout);
+    //FloorMap boundMap = new FloorMap(boundLayout);
 
     public void testForwardFromUp() {
         // GIVEN
@@ -52,109 +54,8 @@ public class KivaMoveTest {
         return a.getX() == b.getX() && a.getY() == b.getY();
     }
 
-    public void testTurnLeftFromUP(){
-            Kiva kiva = new Kiva(defaultMap);
-            kiva.move(KivaCommand.TURN_LEFT);
-            verifyKivaState("testLeftTurnFromUp", 
-            kiva, new Point(2, 4), FacingDirection.LEFT, false, false);
-    }
-    public void testTurnLeftFromLEFT(){
-            Kiva kiva = new Kiva(defaultMap);
-            kiva.move(KivaCommand.TURN_LEFT);
-            kiva.move(KivaCommand.TURN_LEFT);
-            verifyKivaState("testLeftTurnFromLeft", 
-            kiva, new Point(2, 4), FacingDirection.DOWN, false, false);
-        }
-            public void testTurnLeftFromDOWN(){
-            Kiva kiva = new Kiva(defaultMap);
-            kiva.move(KivaCommand.TURN_LEFT);
-            kiva.move(KivaCommand.TURN_LEFT);
-            kiva.move(KivaCommand.TURN_LEFT);
-            verifyKivaState("testLeftTurnFromDown", 
-            kiva, new Point(2, 4), FacingDirection.RIGHT, false, false);
-        }
-         public void testTurnLeftFromRIGHT(){
-            Kiva kiva = new Kiva(defaultMap);
-            kiva.move(KivaCommand.TURN_LEFT);
-            kiva.move(KivaCommand.TURN_LEFT);
-            kiva.move(KivaCommand.TURN_LEFT);
-            kiva.move(KivaCommand.TURN_LEFT);
-            verifyKivaState("testLeftTurnFromrIGHT", 
-            kiva, new Point(2, 4), FacingDirection.UP, false, false);
-        }
-        public void testTurnRightFromUP(){
-            Kiva kiva = new Kiva(defaultMap);
-            kiva.move(KivaCommand.TURN_RIGHT);
-            verifyKivaState("testRightTurnFromUp", 
-            kiva, new Point(2, 4), FacingDirection.RIGHT, false, false);
-        }
-                public void testTurnRightFromRight(){
-            Kiva kiva = new Kiva(defaultMap);
-            kiva.move(KivaCommand.TURN_RIGHT);
-                        kiva.move(KivaCommand.TURN_RIGHT);
-            verifyKivaState("testRightTurnFromRight", 
-            kiva, new Point(2, 4), FacingDirection.DOWN, false, false);
-        }
-        public void testTurnRightFromDown(){
-            Kiva kiva = new Kiva(defaultMap);
-            kiva.move(KivaCommand.TURN_LEFT);
-            kiva.move(KivaCommand.TURN_LEFT);
-            kiva.move(KivaCommand.TURN_RIGHT);
-            verifyKivaState("testRightTurnFromDown", 
-            kiva, new Point(2, 4), FacingDirection.LEFT, false, false);
-        }
-                public void testTurnRightFromLeft(){
-            Kiva kiva = new Kiva(defaultMap);
-            kiva.move(KivaCommand.TURN_LEFT);
-            kiva.move(KivaCommand.TURN_RIGHT);
-            System.out.println("ONLY TWO DIRS HERE");
-                                                   
-                                                                                              
-            verifyKivaState("testRightTurnFromLeft", 
-            kiva, new Point(2, 4), FacingDirection.UP, false, false);
-        }
-    public void testForwardWhileFacingLeft(){
-        Kiva kiva = new Kiva(defaultMap);
-        kiva.move(KivaCommand.TURN_LEFT);
-        kiva.move(KivaCommand.FORWARD);
-        verifyKivaState("testForwardMoveFromRightDirection", kiva, new Point(1,4), FacingDirection.LEFT, false,false);
-    }
     
-    public void testForwardWhileFacingRight(){
-        Kiva kiva = new Kiva(defaultMap);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.FORWARD);
-        verifyKivaState("testForwardMoveFromRightDirection", kiva, new Point(3,4), FacingDirection.RIGHT, false,false);
-    }
-    public void testForwardWhileFacingDown(){
-        Kiva kiva = new Kiva(defaultMap);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.FORWARD);
-        verifyKivaState("testForwardWhileFacingDowwn", kiva, new Point(2,5), FacingDirection.DOWN, false, false);
-    }
-    public void testTurnRightThenLeft(){
-    
-     Kiva kiva = new Kiva(defaultMap);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.TURN_LEFT);
 
-        verifyKivaState("testTurnRightThenLeft", kiva, new Point(2,4), FacingDirection.RIGHT, false, false);
-    }
-     public void testManyRightOneLeft(){
-    
-     Kiva kiva = new Kiva(defaultMap);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.TURN_RIGHT);
-        kiva.move(KivaCommand.TURN_LEFT);
-
-        verifyKivaState("testManyRightThenLeft", kiva, new Point(2,4), FacingDirection.UP, false, false);
-    }
     public void testTakeOnPod(){
         //Input: Create a Kiva object using the default map, and call move() to go up three times, turn right, move right six times, and take the pod. Verify the state​ of the Kiva
         Kiva kiva = new Kiva(defaultMap);
@@ -284,17 +185,7 @@ Kiva kiva = new Kiva(defaultMap);
     }
 
 //testBoundsTests(){
-public void testLowerBoundY(){
-      Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      verifyKivaState("testLowerBoundY", kiva, new Point(2,0), FacingDirection.UP,false,false);
-      verifyNextThrow("testLowerBoundY", kiva, true);
-}
-//TEst lower bout exceptions are old
+
 public void testLowerBoundYException(){
       Kiva kiva = new Kiva(defaultMap);
       //kiva.db = true;
@@ -310,18 +201,7 @@ public void testLowerBoundYException(){
 }
 }
 
-public void testLowerBoundX(){
-
-    String testName = "LowerBoundX";
-      Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
-      kiva.move(KivaCommand.TURN_LEFT);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-
-      verifyKivaState("test"+testName, kiva, new Point(0,4), FacingDirection.LEFT,false,false);
-      //verifyNextThrow("test"+testName, kiva, true);
-}   
+  
 public void testLowerBoundXException(){
 
     String testName = "LowerBoundXException";
@@ -332,15 +212,10 @@ public void testLowerBoundXException(){
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
 
-// try{
-  //    kiva.move(KivaCommand.FORWARD);
- //   }
-//    catch (InvalidFloorMapLocationException e){
-//    System.out.println("Error thrown: " + e);
-//}
+
 }
 public void testMoveOutOfBounds() {
-        Kiva kiva = new Kiva(defaultMap);
+        Kiva kiva = new Kiva(new FloorMap(boundsLayout));
         kiva.move(KivaCommand.FORWARD);
         kiva.move(KivaCommand.TURN_LEFT);
         kiva.move(KivaCommand.FORWARD);
@@ -356,19 +231,7 @@ public void testMoveOutOfBounds() {
 
 
 
-void upperBoundTestRand(){
 
-    String testName = "UpperBoundY";
-      Kiva kiva = new Kiva(defaultMap);
-      //kiva.db = true;
-      kiva.move(KivaCommand.TURN_LEFT);
-      kiva.move(KivaCommand.TURN_LEFT);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-
-            verifyKivaState("test"+testName, kiva, new Point(2,6), FacingDirection.DOWN,false,false);
-      verifyNextThrow("test"+testName, kiva, true);
-    }
 public void testUpperBoundYException(){
 
     String testName = "UpperBoundYException";
@@ -387,27 +250,7 @@ public void testUpperBoundYException(){
     System.out.println("Error thrown: " + e);
 }
 }
-public void testUpperBoundX(){
 
-    String testName = "UpperBoundX";
-      Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
-      kiva.move(KivaCommand.TURN_RIGHT);
-      kiva.move(KivaCommand.FORWARD);      
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-      kiva.move(KivaCommand.FORWARD);
-            
-
-            verifyKivaState("test"+testName, kiva, new Point(12,6), FacingDirection.DOWN,false,false);
-      verifyNextThrow("test"+testName, kiva, true);
-    }
     
 public void testUpperBoundXException(){
     String testName = "UpperBoundXException";
@@ -558,3 +401,4 @@ public void testPodCollision(){
         }
     }
 }
+
