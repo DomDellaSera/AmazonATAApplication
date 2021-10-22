@@ -133,9 +133,11 @@ public class Kiva {
         //this.carryingPod = false;
         this.map = map;
         //this.currentLocation = currentLocation;    
-        this.currentLocation = map.getInitialKivaLocation();
-        setNextLocation();
+        this.currentLocation = currentLocation;
+        //setNextLocation();
+        this.MotorLifetime = 0.0;
         constructGroupsMod4();
+        this.directionFacing = FacingDirection.UP;
         
     
     }

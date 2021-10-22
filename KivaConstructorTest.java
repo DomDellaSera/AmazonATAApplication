@@ -50,9 +50,9 @@ public class KivaConstructorTest {
     Point initialLocation = kiva.getCurrentLocation();
     Point expectedLocation = new Point(5,6);
     if (sameLocation(initialLocation, expectedLocation)) { 
-            System.out.println("testSingleArgumentConstructor SUCCESS"); 
+            System.out.println("testDoubleArgumentConstructor SUCCESS"); 
         } else { 
-            System.out.println(String.format( "testSingleArgumentConstructor FAIL: %s != (2,4)!", initialLocation)); 
+            System.out.println(String.format( "testDoubleArgumentConstructor FAIL: %s != (2,4)!", initialLocation)); 
         } 
     }
 }
