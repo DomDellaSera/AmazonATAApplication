@@ -87,7 +87,7 @@ public class testExceptions {
     }
     public void getMetadata(){
     Kiva kiva = new Kiva(defaultMap);
-    kiva.getMinNums();
+ //   kiva.getMinNums();
 }
     public void testDropOnDropZone(){
      //Create a Kiva object using the default map, and call move() to go up three times, turn right, move right six times, 
@@ -255,7 +255,16 @@ public void testLowerBoundYException(){
     System.out.println("Error thrown: " + e);
 }
 }
-
+public void testLowerBoundY(){
+      Kiva kiva = new Kiva(new FloorMap(boundsLayout));
+      kiva.db = true;
+      kiva.move(KivaCommand.FORWARD);
+      kiva.move(KivaCommand.FORWARD);
+      kiva.move(KivaCommand.FORWARD);
+      kiva.move(KivaCommand.FORWARD);
+      verifyKivaState("testLowerBoundY", kiva, new Point(2,0), FacingDirection.UP,false,false);
+      
+}
   
 public void testLowerBoundXException(){
 
@@ -392,12 +401,12 @@ public void testPodCollision(){
         System.out.println("Fail! Moved onto a pod while carrying a pod!");
         //kiva.move(KivaCommand.FORWARD);
         }
-    private void verifyNextThrow(
+  /*  private void verifyNextThrow(
             String testName,
             Kiva actual,
             boolean expectThrow){
             
-            boolean throwNextStatus = actual.doesMoveForwardEqualThrow();
+        //    boolean throwNextStatus = actual//.doesMoveForwardEqualThrow();
             if(throwNextStatus == expectThrow){
                  System.out.println(
                     String.format("%s: exception throw onForward SUCCESS", testName));
@@ -405,7 +414,7 @@ public void testPodCollision(){
             else{
               System.out.println(
                     String.format("%s: Exception throw onForward FAIL!", testName));}
-            }
+            }*/
 
             /**
              * Verifies the current keva state

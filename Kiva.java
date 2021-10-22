@@ -2,8 +2,22 @@ import edu.duke.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 /**
- * Kiva simulates the movement of a robot by providing a small list of options for movement. Kiva moves across a FloorMap with various obsticales. Kiva's ultimate goal is to move the POD
- * to the Drop Zone in order to simulate the movement of goods by robot.
+ * Kiva simulates the movement of a robot by providing a small list of options for movement. 
+ * 
+ * Its main function is the move command which requires the input of a KivaCommand enum option. 
+ * 
+ * <h4>Move Command</h4>
+ * <p>The move command is mirrored by the KivaCommand with a similar switch statement for the five commands (FORWARD, TURN_LEFT,TURN_RIGHT,TAKE,DROP),</p>
+ * <p>each has their own helper statement.</p>
+ * <h5>The FORWARD Command</h5>
+ * <p>The forward command is the main command that executes a planed movement. The turn commands change this plan and the TAKE and DROP commands coorrdinate with FORWARD's implementation in order function correctly.</p>
+ * <p> Thus FORWARD alone applies it's methods in both space and time, whereas the other methods are applied locally. </p>
+ * 
+ * <h4>TURN</h4>
+ * <p>The turn commands are implemented as two index lookups on arrays. The Left/Right turn commands access the index for their respective arrays and take it's successor mod 4. 
+ * This works because the imaginary number multiplied by itself is isomorphic to the Integers mod4. The array lookup is equivalant to choosing a complex number and its conjugate(e.g. x+yi, x-yi) and multiplying either by 
+ * i.</p>
+ * @see java.lang.Object.KivaCommand
  * 
  * @author Dominic Della Sera  
  * @version (a version number or a date)
@@ -35,7 +49,7 @@ public class Kiva {
      */
     final private ArrayList<FacingDirection> fdRightIndex = new ArrayList<FacingDirection>();
     
-    boolean throwNextForward;
+    private boolean throwNextForward;
     boolean db = false;
     
     private String errorMessage;
@@ -114,8 +128,7 @@ public class Kiva {
      constructGroupsMod4();
      
     }
-    public void getPodLocation(){
-    System.out.println("Pod Location: "+ map.getPodLocation());}
+    public Point getPodLocation(){return map.getPodLocation();}
     Kiva(FloorMap map, Point currentLocation){
         //this.carryingPod = false;
         this.map = map;
@@ -130,14 +143,14 @@ public class Kiva {
     //upperBound = new Point(map.getMaxRowNum()+1,map.getMaxColNum()+1);
     //lowerBound = new Point(-1,-1);
     //}
-    public void getMinNums(){
+    private  void getMinNums(){
     System.out.println("GetMaxColNum "+map.getMaxColNum());
     System.out.println("GetMinColNum "+map.getMinColNum());
     System.out.println("GetMaxRowNum "+map.getMaxRowNum());
     System.out.println("GetMinRowNum "+map.getMinRowNum());
     }
     
-    int rotateLeftGroup(){
+    private int rotateLeftGroup(){
         FacingDirection dir = getDirectionFacing();
         return (fdIndex.indexOf(dir)+1)%4;
     }
@@ -176,11 +189,11 @@ public class Kiva {
         
    switch(nextObj){
         case OBSTACLE:
-        throw new IllegalMoveException("Kiva is trying to run into an obstacle");
+        throw new IllegalMoveException(String.format("Kiva at %s is trying to run into a(n) %s at %s", getCurrentLocation(),nextObj, nextLocation ));
         //break;
         case POD:
         if(isCarryingPod() == true){
-         throw new IllegalMoveException("Kiva is holding a POD while trying to move onto a POD");
+         throw new IllegalMoveException(String.format("Kiva is holding a POD at %s while trying to move onto a second POD at %s",getCurrentLocation(), nextLocation));
         }
          break;
     }
@@ -196,7 +209,7 @@ public class Kiva {
         System.out.println("Next move "+ nextMove + " upper Bound: " +bound );
     }
         if(nextMove > bound){
-          throw new IllegalMoveException("Move beyond Upper bound bounds");
+          throw new IllegalMoveException(String.format("Attempted move %s to %s is beyond upper bound %s", getDirectionFacing(), nextMove, getCurrentLocation()));
         //setThrowNextMove(true);
         //System.out.println("setThrowNextMove is true");
         //setErrorMessage("Exceeded Upper Bound: moved to " + nextMove + " outside of "+ bound );
@@ -209,7 +222,7 @@ public class Kiva {
     if(db == true){
         System.out.println("Next move "+ nextMove + "lower Bound: " +bound );}
     if(nextMove< bound){
-       throw new IllegalMoveException("Move beyond lower bounds");
+       throw new IllegalMoveException(String.format("Attempted move %s to %s is beyond upper bound %s", getDirectionFacing(), nextMove, getCurrentLocation()));
     //setThrowNextMove(true);
     //setErrorMessage("Exceeded Lower Bound: moved to " + nextMove + " outside of "+ bound );
     }
@@ -224,22 +237,29 @@ public class Kiva {
         this.throwNextForward = throwNextForward;
         
     }
-    public boolean doesMoveForwardEqualThrow(){
+    private boolean doesMoveForwardEqualThrow(){
     return throwNextForward;
 }
 
 private void setErrorMessage(String message){
  errorMessage = message;
 }
-public String getErrorMessage(){
+private String getErrorMessage(){
 return errorMessage;
 }
+    /**
+     * getNextLocation is the Point on the grid where FORWARD command will move to
+     * @return a Point of the next locaiton
+     */
     public Point getNextLocation(){
     //public String getNextLocation(){
         //return nextLocation.toString();
         return nextLocation;
     }
-
+/**
+ *  Returns the direction Kiva is facing.
+ *  @return A FacingDirecion enum. Can be UP, DOWN, LEFT, RIGHT.
+ */
   public FacingDirection getDirectionFacing(){
       return directionFacing;
    }
@@ -296,7 +316,7 @@ return errorMessage;
              3 1
               2
 */
-    int curDirIdx = (fdRightIndex.indexOf(directionFacing) + 1 ) % 4;
+     int curDirIdx = (fdRightIndex.indexOf(directionFacing) + 1 ) % 4;
     
    // System.out.println("Turnningr Right, next direction index: "+ curDirIdx);
         ///curDirIdx= (curDirIdx +1)%4;
@@ -311,15 +331,15 @@ return errorMessage;
             carryingPod = true;
         }
         else {
-            throw new NoPodException("Not standing over pod");
+            throw new NoPodException(String.format("Cannot take pod from %s. Pod is at %s :)", getCurrentLocation(), getPodLocation()));
     }
         
     }
 
     private void dropPod(){
-        System.out.println("Current location "+ getCurrentLocation());
-        System.out.println("DropZone Location "+ getDropZoneLocation());
-        System.out.println("Pod Carying:" + isCarryingPod());
+        //System.out.println("Current location "+ getCurrentLocation());
+        //System.out.println("DropZone Location "+ getDropZoneLocation());
+        //System.out.println("Pod Carying:" + isCarryingPod());
         
 
         
@@ -331,11 +351,11 @@ return errorMessage;
            
             
             else if(!sameLocation(getCurrentLocation(),getDropZoneLocation())) {
-            throw new IllegalDropZoneException("Incorrect drop zone");
+            throw new IllegalDropZoneException(String.format("%s is not the correct drop zone. %s is.", getCurrentLocation(), getDropZoneLocation()));
         }
     }
            else if (!isCarryingPod() && sameLocation(getCurrentLocation(),getDropZoneLocation())){
-            throw new IllegalMoveException("Correct location, but the pod was forgotten");
+            throw new IllegalMoveException(String.format("Correct location drop zone %s, but the pod was left behind at %s", getCurrentLocation(), getPodCurrentLocation()));
         }
         else if(!isCarryingPod() && !sameLocation(getCurrentLocation(),getDropZoneLocation())){
             throw new NoPodException("Kiva is not currently carrying the pod");
@@ -351,9 +371,24 @@ return errorMessage;
     
 
     /**
-     * move is the main command which creates Robot action
+     * move {@code move} is the main command which creates Robot action
      * 
-     * @param wefw
+     * @param KivaCommand {@link KivaCommand} enum datatype allows only a fixed set of constants from user input.
+     * @exception IllegalMoveException is thrown Keva attempts to
+     * <ul>
+     * <li>move off the map</li>
+     * <li>DROP at the drop zone with no POD</li>
+     * <li>FORWARD into an obstacle</li>
+     * <li>move onto a POD space while already holding a pod</li>
+     * </ul>
+ 
+     * @throws NoPodException is thrown under two conditions:
+     * <ul>
+     * <li>DROP: Kiva attempts drop in empty space without holding a POD</li>
+     * <li>TAKE: Kiva attempts TAKE while not standing over a POD</li>
+     * </ul>
+     * 
+     * @see KivaCommand
      */
     public void move(KivaCommand command){
         switch (command) {
@@ -412,6 +447,7 @@ public Point getCurrentLocation(){
     
       
     public Point getDropZoneLocation(){return map.getDropZoneLocation();}
+    public Point getPodCurrentLocation(){return map.getPodLocation();}
 
     public void printMap(){
     System.out.println(map.toString());}

@@ -1,8 +1,10 @@
 import java.util.Arrays;
 /**
- * Write a description of KivaCommand here.
+ * KivaCommand isses commands to Kiva instances. 
  * 
- * @author (your name) 
+ * KivaCommand provides an interface between the user input and robot command, only allowing for a finite set of options.
+ * 
+ * @author Amazon 
  * @version (a version number or a date)
  */
 public enum KivaCommand {

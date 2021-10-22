@@ -178,7 +178,7 @@ public class KivaMoveTest {
     }
     public void getMetadata(){
     Kiva kiva = new Kiva(defaultMap);
-    kiva.getMinNums();
+    //kiva.getMinNums();
 }
     public void testDropOnDropZone(){
      //Create a Kiva object using the default map, and call move() to go up three times, turn right, move right six times, 
@@ -292,7 +292,7 @@ public void testLowerBoundY(){
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
       verifyKivaState("testLowerBoundY", kiva, new Point(2,0), FacingDirection.UP,false,false);
-      verifyNextThrow("testLowerBoundY", kiva, true);
+      //verifyNextThrow("testLowerBoundY", kiva, true);
 }
 //TEst lower bout exceptions are old
 public void testLowerBoundYException(){
@@ -367,7 +367,7 @@ void upperBoundTestRand(){
       kiva.move(KivaCommand.FORWARD);
 
             verifyKivaState("test"+testName, kiva, new Point(2,6), FacingDirection.DOWN,false,false);
-      verifyNextThrow("test"+testName, kiva, true);
+      //verifyNextThrow("test"+testName, kiva, true);
     }
 public void testUpperBoundYException(){
 
@@ -406,7 +406,7 @@ public void testUpperBoundX(){
             
 
             verifyKivaState("test"+testName, kiva, new Point(12,6), FacingDirection.DOWN,false,false);
-      verifyNextThrow("test"+testName, kiva, true);
+      //verifyNextThrow("test"+testName, kiva, true);
     }
     
 public void testUpperBoundXException(){
@@ -479,12 +479,12 @@ public void testPodCollision(){
         kiva.move(KivaCommand.TURN_RIGHT);
         kiva.move(KivaCommand.FORWARD);
         }
-    private void verifyNextThrow(
+    /*private void verifyNextThrow(
             String testName,
             Kiva actual,
             boolean expectThrow){
             
-            boolean throwNextStatus = actual.doesMoveForwardEqualThrow();
+          //  boolean throwNextStatus = actual.doesMoveForwardEqualThrow();
             if(throwNextStatus == expectThrow){
                  System.out.println(
                     String.format("%s: exception throw onForward SUCCESS", testName));
@@ -492,7 +492,7 @@ public void testPodCollision(){
             else{
               System.out.println(
                     String.format("%s: Exception throw onForward FAIL!", testName));}
-            }
+            }*/
 
             /**
              * Verifies the current keva state
