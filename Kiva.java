@@ -5,26 +5,29 @@ import java.util.ArrayList;
  * Kiva simulates the movement of a robot by providing a small list of options for movement. 
  * 
  * Its main function is the move command which requires the input of a KivaCommand enum option. 
- * 
- * <h4>Move Command</h4>
+ * <h3>Implementation Details</h3>
+ * <h4>Move Method</h4>
  * <p>The move command is mirrored by the KivaCommand with a similar switch statement for the five commands (FORWARD, TURN_LEFT,TURN_RIGHT,TAKE,DROP),</p>
  * <p>each has their own helper statement.</p>
  * <h5>The FORWARD Command</h5>
- * <p>The forward command is the main command that executes a planed movement. The turn commands change this plan and the TAKE and DROP commands coorrdinate with FORWARD's implementation in order function correctly.</p>
+ * <p>The forward command is the main command that executes a planed movement. The turn command changes this plan and the TAKE and DROP commands coorrdinate with FORWARD's implementation in order function correctly.</p>
  * <p> Thus FORWARD alone applies it's methods in both space and time, whereas the other methods are applied locally. </p>
  * 
- * <h4>TURN</h4>
- * <p>The turn commands are implemented as two index lookups on arrays. The Left/Right turn commands access the index for their respective arrays and take it's successor mod 4. 
- * This works because the imaginary number multiplied by itself is isomorphic to the Integers mod4. The array lookup is equivalant to choosing a complex number and its conjugate(e.g. x+yi, x-yi) and multiplying either by 
- * i.</p>
+ * <h5>TURN</h5>
+ * <p>The turn commands are implemented as two index lookups on arrays. The Left/Right turn commands access the index for their respective arrays, add one to determine the successor, computes mod 4. 
+ *  The array lookup is equivalant to choosing a complex number and its conjugate(e.g. x+yi, x-yi) and multiplying either by 
+ * i for rotation in the respective direction. This constructurion can be extended to Quaternions easily for use in 3D rotations. Unfortunately, without direct VPN access I realized too late how the FacingDirection enum was supposed to be implemented.</p>
  * @see java.lang.Object.KivaCommand
  * 
  * @author Dominic Della Sera  
- * @version (a version number or a date)
+ * @version 0.1
  */
 public class Kiva {
-    private Point currentLocation;//DO THISE NEED TO BE INITIALIZED TO SOME NUMBER/VARIABLE???
+    private Point currentLocation;
     private Point nextLocation;
+    /**
+     * FloorMap map describes the area of activity, along with it's attributes.
+     */
     FloorMap map;
     
     /**
@@ -32,14 +35,20 @@ public class Kiva {
      * 
      *Its possible values are UP, LEFT, RIGHT, DOWN.
      */
-    FacingDirection directionFacing; //= FacingDirection.UP;
+    public FacingDirection directionFacing; 
+    /**
+     * carryingPod alerts the user of pod related alert statuses as well as successful delivery of pods.
+     */
     boolean carryingPod = false;
+    /**
+     * successfullyDropped alerts the user upon successful input. Continuation of input will skip the corresponding message in RemoteControl.
+     */
     boolean successfullyDropped = false;
     private HashMap<FacingDirection, Integer> directionIndex = new HashMap();
-    
+    //boolean throwNextForward;
     private Point upperBound;
     private Point lowerBound;
-    private double MotorLifetime;
+    public long MotorLifetime;
     /**
      * This is the array index for rotating left
      */
@@ -49,8 +58,8 @@ public class Kiva {
      */
     final private ArrayList<FacingDirection> fdRightIndex = new ArrayList<FacingDirection>();
     
-    private boolean throwNextForward;
-    boolean db = false;
+
+
     
     private String errorMessage;
     /**
@@ -122,7 +131,7 @@ public class Kiva {
      this.currentLocation = map.getInitialKivaLocation();
      //System.out.println(currentLocation);
      this.directionFacing = FacingDirection.UP;
-     this.MotorLifetime = 0.0;
+     this.MotorLifetime = 0;
 
      //setNextLocation();
      constructGroupsMod4();
@@ -135,7 +144,7 @@ public class Kiva {
         //this.currentLocation = currentLocation;    
         this.currentLocation = currentLocation;
         //setNextLocation();
-        this.MotorLifetime = 0.0;
+        this.MotorLifetime = 0;
         constructGroupsMod4();
         this.directionFacing = FacingDirection.UP;
         
@@ -192,7 +201,7 @@ public class Kiva {
    switch(nextObj){
         case OBSTACLE:
         throw new IllegalMoveException(String.format("Kiva at %s is trying to run into a(n) %s at %s", getCurrentLocation(),nextObj, nextLocation ));
-        //break;
+
         case POD:
         if(isCarryingPod() == true){
          throw new IllegalMoveException(String.format("Kiva is holding a POD at %s while trying to move onto a second POD at %s",getCurrentLocation(), nextLocation));
@@ -207,55 +216,34 @@ public class Kiva {
     }
     
     private void checkUpperBounds(int nextMove,int bound) {
-        if(db == true){
-        System.out.println("Next move "+ nextMove + " upper Bound: " +bound );
-    }
+        
+    
         if(nextMove > bound){
           throw new IllegalMoveException(String.format("Attempted move %s to %s is beyond upper bound %s", getDirectionFacing(), nextMove, getCurrentLocation()));
-        //setThrowNextMove(true);
-        //System.out.println("setThrowNextMove is true");
-        //setErrorMessage("Exceeded Upper Bound: moved to " + nextMove + " outside of "+ bound );
+
     }
-    else{setThrowNextMove(false);
-    }
+  
 }
     
     private void checkLowerBounds(int nextMove, int bound){
-    if(db == true){
-        System.out.println("Next move "+ nextMove + "lower Bound: " +bound );}
+
     if(nextMove< bound){
        throw new IllegalMoveException(String.format("Attempted move %s to %s is beyond upper bound %s", getDirectionFacing(), nextMove, getCurrentLocation()));
-    //setThrowNextMove(true);
-    //setErrorMessage("Exceeded Lower Bound: moved to " + nextMove + " outside of "+ bound );
+
     }
-    else{
-        setThrowNextMove(false);
-    }
+
 }
 
 
-    
-    private void setThrowNextMove(boolean throwNextForward){
-        this.throwNextForward = throwNextForward;
-        
-    }
-    private boolean doesMoveForwardEqualThrow(){
-    return throwNextForward;
-}
 
-private void setErrorMessage(String message){
- errorMessage = message;
-}
-private String getErrorMessage(){
-return errorMessage;
-}
+
+
     /**
      * getNextLocation is the Point on the grid where FORWARD command will move to
      * @return a Point of the next locaiton
      */
-    public Point getNextLocation(){
-    //public String getNextLocation(){
-        //return nextLocation.toString();
+    public  Point getNextLocation(){
+
         return nextLocation;
     }
 /**
@@ -273,33 +261,7 @@ return errorMessage;
     private boolean sameLocation(Point a, Point b) {
         return a.getX() == b.getX() && a.getY() == b.getY();
     }
-    //These turn turnLeft and turn right operations are laid out in this way because I'm really trying to make two separate cayley tabels
-    //so that don't have to use negative numbers. Or more technically I want 2 groups over the set of Natural Numbers(N) instead of 1 over Integers(Z). 
-    
-    /*
-     * 
-     * +|e 1 2 3
-      {1{2,3,4,e},
-       2{3,4,1,2},
-       3{4,1,2,3},
-       4{1,2,3,4}}
-       
-       -|1 2 3 4
-      {1{4,3,2,1},
-       2{1,4,3,2},
-       3{2,1,4,3},
-       4{3,2,1,4}}
-       
-       It is intersting to note that this pattern also holds with the complex number i (square root of negative 1) multiplied by itself
-        * |i^1 i^2 i^3 i^4
-      {i^1{-1,-i,1,i},
-       i^2{-i,1,i,-1},
-       i^3{1,i,-1,-i},
-       i^4{-i,-1,i,1}}
-       
 
-            
-       */
       
      
     private void turnLeft(){
@@ -319,9 +281,6 @@ return errorMessage;
               2
 */
      int curDirIdx = (fdRightIndex.indexOf(directionFacing) + 1 ) % 4;
-    
-   // System.out.println("Turnningr Right, next direction index: "+ curDirIdx);
-        ///curDirIdx= (curDirIdx +1)%4;
         setDirectionFacing(fdRightIndex.get(curDirIdx));
 
     }
@@ -339,12 +298,7 @@ return errorMessage;
     }
 
     private void dropPod(){
-        //System.out.println("Current location "+ getCurrentLocation());
-        //System.out.println("DropZone Location "+ getDropZoneLocation());
-        //System.out.println("Pod Carying:" + isCarryingPod());
-        
-
-        
+     
        if(isCarryingPod() == true){
            if(sameLocation(getCurrentLocation(),getDropZoneLocation()) ){
                 carryingPod = false;
@@ -362,9 +316,6 @@ return errorMessage;
         else if(!isCarryingPod() && !sameLocation(getCurrentLocation(),getDropZoneLocation())){
             throw new NoPodException("Kiva is not currently carrying the pod");
         }
-        
-        
-        //}
     }
         
     
@@ -393,13 +344,10 @@ return errorMessage;
      * @see KivaCommand
      */
     public void move(KivaCommand command){
+        successfullyDropped = false;
         switch (command) {
             case FORWARD:
-           // if(nextLocation > Upperbound || nextLocation > LowerBound){
-           // }
-           
-           //if (throwNextForward==true){
-            //throw  new IllegalMoveException(getErrorMessage()); }
+
             moveForward();
             incrementMotorLifetime();
             break;
@@ -429,9 +377,9 @@ return errorMessage;
     currentLocation = nextLocation;
 
     //setNextLocation(); //THIS MOVES THE ROBOT BECAUSE CURRENT LOCATION HAS CHANGED
-            System.out.println("Facing Direction " + getDirectionFacing());
-        System.out.println(getCurrentLocation());
-        System.out.println("Next Location " + getNextLocation());
+           // System.out.println("Facing Direction " + getDirectionFacing());
+       // System.out.println(getCurrentLocation());
+        //System.out.println("Next Location " + getNextLocation());
     }
     
 
@@ -454,6 +402,6 @@ public Point getCurrentLocation(){
     public void printMap(){
     System.out.println(map.toString());}
     
-    public double getMotorLifetime(){return MotorLifetime;}
+    public long getMotorLifetime(){return MotorLifetime;}
     private void incrementMotorLifetime(){MotorLifetime+=1000;}
 }

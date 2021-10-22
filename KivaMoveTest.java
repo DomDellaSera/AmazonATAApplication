@@ -286,7 +286,7 @@ Kiva kiva = new Kiva(defaultMap);
 //testBoundsTests(){
 public void testLowerBoundY(){
       Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
+
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
@@ -297,7 +297,7 @@ public void testLowerBoundY(){
 //TEst lower bout exceptions are old
 public void testLowerBoundYException(){
       Kiva kiva = new Kiva(defaultMap);
-      //kiva.db = true;
+
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
@@ -314,7 +314,7 @@ public void testLowerBoundX(){
 
     String testName = "LowerBoundX";
       Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
+
       kiva.move(KivaCommand.TURN_LEFT);
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
@@ -326,7 +326,7 @@ public void testLowerBoundXException(){
 
     String testName = "LowerBoundXException";
       Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
+
       kiva.move(KivaCommand.TURN_LEFT);
       kiva.move(KivaCommand.FORWARD);
       kiva.move(KivaCommand.FORWARD);
@@ -373,7 +373,7 @@ public void testUpperBoundYException(){
 
     String testName = "UpperBoundYException";
       Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
+
       kiva.move(KivaCommand.TURN_LEFT);
       kiva.move(KivaCommand.TURN_LEFT);
       kiva.move(KivaCommand.FORWARD);
@@ -391,7 +391,7 @@ public void testUpperBoundX(){
 
     String testName = "UpperBoundX";
       Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
+
       kiva.move(KivaCommand.TURN_RIGHT);
       kiva.move(KivaCommand.FORWARD);      
       kiva.move(KivaCommand.FORWARD);
@@ -412,7 +412,7 @@ public void testUpperBoundX(){
 public void testUpperBoundXException(){
     String testName = "UpperBoundXException";
       Kiva kiva = new Kiva(defaultMap);
-      kiva.db = true;
+
       kiva.move(KivaCommand.TURN_RIGHT);
       kiva.move(KivaCommand.FORWARD);      
       kiva.move(KivaCommand.FORWARD);

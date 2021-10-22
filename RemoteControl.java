@@ -1,11 +1,10 @@
 import edu.duke.FileResource;
 import java.util.Arrays;
 /**
- * This is the class that controls Kiva's actions. Implement the <code>run()</code>
- * method to deliver the pod and avoid the obstacles.
+ * This is the class that controls Kiva's actions. It askes for a FloorMap file followed by a sequence of directions for Kiva to advance. It utilizes enums to constrain potential malicious user input
+ * 
  *
- * This is starter code that may or may not work. You will need to update the code to
- * complete the project.
+*
  */
 public class RemoteControl {
     KeyboardResource keyboardResource;
@@ -14,6 +13,9 @@ public class RemoteControl {
      * Build a new RemoteControl.
      */
     public RemoteControl() {
+        /**
+         * Keyboard resource prompts the user for an input file
+         */
         keyboardResource = new KeyboardResource();
     }
 
@@ -21,6 +23,8 @@ public class RemoteControl {
      * The controller that directs Kiva's activity. Prompts the user for the floor map
      * to load, displays the map, and asks the user for the commands for Kiva to execute.
      *
+     *@param inputMap the input map text file that will serve as the Wherehouse map.
+     *@throws IllegalArgumentException if user doesn't enter the correct instructions.
      * [Here's the method you'll execute from within BlueJ. It may or may not run successfully
      * as-is, but you'll definitely need to add more to complete the project.]
      */
@@ -39,15 +43,27 @@ public class RemoteControl {
         System.out.println("Please enter the directions for the Kiva Robot to take.");
         String directions = keyboardResource.getLine();
         String[] dirArray = convertToKivaCommands(directions);
-        System.out.println(Arrays.toString(KivaCommand.values()));
+        //System.out.println(Arrays.toString(KivaCommand.values()));
         System.out.println("Directions that you typed in: " +Arrays.toString(dirArray)+ dirArray.length);
         //String[] kivarray = Arrays.toString(KivaCommand.values());
         for(int i = 0; i< dirArray.length; i++){
             KivaCommand k = null;
         kiva.move(k.valueOf(dirArray[i]));
         }
+        
+        if(kiva.successfullyDropped){
+        System.out.println("Successfully picked up the pod and dropped it off. Thank you!");
+    }else{
+        System.out.println("I'm sorry. The Kiva Robot did not pick up the pod then drop it off in the right place.");
     }
+
     
+}
+/**
+ * convertToKivaCommands is a user input handler that assures user input is correctly formatted and handles string conversion. 
+ * @parama keyboard is a raw String of commands 
+ * @return String[] keys is a formatted array processed for entry into a KivaCommand
+ */
     private String[] convertToKivaCommands(String keyboard){
      String[] keys = new String[keyboard.length()];
      KivaCommand[] commands = KivaCommand.values();
